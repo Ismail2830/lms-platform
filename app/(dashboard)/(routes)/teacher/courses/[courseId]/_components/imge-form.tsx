@@ -13,6 +13,7 @@ import {
     FormItem,
     FormMessage,
   } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react"
 import { Pencil } from "lucide-react"
@@ -21,19 +22,19 @@ import { Textarea } from "@/components/ui/textarea"
 import { Course } from "@prisma/client"
 
 
-interface DescriptionFormProps{
-    initialData: Course;
+interface ImageFormProps{
+    initialData: Course
     courseId: string
 };
 const formSchema = z.object({
-    description: z.string().min(1, {
-      message: "Description is required",
+    imageUrl: z.string().min(1, {
+      message: "Image is required",
     }),
   });
-export const DescriptionForm = ({
+export const ImageForm = ({
     initialData,
     courseId
-}: DescriptionFormProps) => {
+}: ImageFormProps) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const toggleEdit = () => setIsEditing((current) => !current);
@@ -43,7 +44,7 @@ export const DescriptionForm = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-          description: initialData?.description || ""
+            imageUrl: initialData?.imageUrl || ""
         },
       });
       const { isSubmitting, isValid } = form.formState;
@@ -62,14 +63,14 @@ export const DescriptionForm = ({
     return(
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
             <div className="font-medium flex items-center justify-between">
-        Course description
+        Course image
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit description
+              Edit image
             </>
           )}
         </Button>
@@ -77,9 +78,9 @@ export const DescriptionForm = ({
       {!isEditing && (
         <p className={cn(
             "text-sm mt-2",
-            !initialData.description && "text-slate-500 italic"
+            !initialData.imageUrl && "text-slate-500 italic"
           )}>
-          {initialData.description || "No description"}
+          {initialData.imageUrl || "No description"}
         </p>
       )}
       {isEditing && (
